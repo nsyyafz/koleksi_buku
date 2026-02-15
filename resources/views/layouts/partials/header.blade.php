@@ -1,0 +1,1 @@
+<link rel="shortcut icon" href="{{ asset('purple/images/favicon.png') }}" />
