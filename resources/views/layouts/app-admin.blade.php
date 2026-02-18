@@ -9,10 +9,10 @@
     @include('layouts.partials.header')
     
     <!-- Style Global -->
-    @include('layouts.partials.styles')
+    @include('layouts.partials.styles-global')
     
     <!-- Style Page -->
-    @stack('styles')
+    @stack('styles-page')
 </head>
 <body>
     <div class="container-scroller">
@@ -36,9 +36,9 @@
     </div>
     
     <!-- Javascript Global -->
-    @include('layouts.partials.scripts')
+    @include('layouts.partials.scripts-global')
     
     <!-- Javascript Page -->
-    @stack('scripts')
+    @stack('scripts-page')
 </body>
 </html>

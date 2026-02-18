@@ -3,5 +3,8 @@
 <link rel="stylesheet" href="{{ asset('purple/assets/vendors/ti-icons/css/themify-icons.css') }}">
 <link rel="stylesheet" href="{{ asset('purple/assets/vendors/css/vendor.bundle.base.css') }}">
 <link rel="stylesheet" href="{{ asset('purple/assets/vendors/font-awesome/css/font-awesome.min.css') }}">
+<!-- endinject -->
+
 <!-- Layout styles -->
 <link rel="stylesheet" href="{{ asset('purple/assets/css/style.css') }}">
+<!-- End layout styles -->

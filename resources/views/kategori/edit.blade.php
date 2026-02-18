@@ -1,46 +1,106 @@
 @extends('layouts.app-admin')
 
-@section('title', 'Edit Kategori')
+@section('title', 'Data Kategori')
+
+@push('styles-page')
+<style>
+    .table-kategori tbody tr:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+    .btn-action {
+        margin-right: 5px;
+    }
+</style>
+@endpush
 
 @section('content')
 <div class="page-header">
-    <h3 class="page-title">Edit Kategori</h3>
+    <h3 class="page-title">Data Kategori</h3>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('/home') }}">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('kategori.index') }}">Kategori</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            <li class="breadcrumb-item active" aria-current="page">Kategori</li>
         </ol>
     </nav>
 </div>
 
 <div class="row">
-    <div class="col-md-6 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Form Edit Kategori</h4>
-                
-                <form action="{{ route('kategori.update', $kategori->idkategori) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="nama_kategori">Nama Kategori</label>
-                        <input type="text" 
-                               class="form-control @error('nama_kategori') is-invalid @enderror" 
-                               id="nama_kategori" 
-                               name="nama_kategori" 
-                               value="{{ old('nama_kategori', $kategori->nama_kategori) }}"
-                               placeholder="Masukkan nama kategori">
-                        @error('nama_kategori')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title mb-0">Daftar Kategori</h4>
+                    <a href="{{ route('kategori.create') }}" class="btn btn-gradient-primary btn-sm">
+                        <i class="mdi mdi-plus"></i> Tambah Kategori
+                    </a>
+                </div>
+
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    
-                    <button type="submit" class="btn btn-gradient-primary me-2">Update</button>
-                    <a href="{{ route('kategori.index') }}" class="btn btn-light">Batal</a>
-                </form>
+                @endif
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-kategori">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kategori</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($kategoris as $index => $kategori)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $kategori->nama_kategori }}</td>
+                                <td>
+                                    <a href="{{ route('kategori.edit', $kategori->idkategori) }}" 
+                                       class="btn btn-gradient-info btn-sm btn-action">
+                                        <i class="mdi mdi-pencil"></i> Edit
+                                    </a>
+                                    <form action="{{ route('kategori.destroy', $kategori->idkategori) }}" 
+                                          method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-gradient-danger btn-sm btn-delete">
+                                            <i class="mdi mdi-delete"></i> Hapus
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center">Tidak ada data</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts-page')
+<script>
+    $(document).ready(function() {
+        // Konfirmasi sebelum hapus
+        $('.btn-delete').click(function(e) {
+            if (!confirm('Yakin ingin menghapus kategori ini?')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // Auto hide alert setelah 3 detik
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 3000);
+    });
+</script>
+@endpush
