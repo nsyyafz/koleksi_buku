@@ -78,6 +78,21 @@
                                         LOGIN
                                     </button>
                                 </div>
+
+                                <!-- Divider OR -->
+                                <div class="my-3 d-flex justify-content-between align-items-center">
+                                    <div style="flex: 1; height: 1px; background-color: #ddd;"></div>
+                                    <span style="padding: 0 15px; color: #999; font-weight: 500;">ATAU</span>
+                                    <div style="flex: 1; height: 1px; background-color: #ddd;"></div>
+                                </div>
+
+                                <!-- Google Login Button -->
+                                <div class="mt-3">
+                                    <a href="{{ route('google.redirect') }}" class="btn btn-block btn-lg font-weight-medium auth-form-btn d-flex align-items-center justify-content-center" style="background-color: #4285f4; color: white; border: none;">
+                                        <i class="mdi mdi-google" style="font-size: 24px; margin-right: 10px;"></i>
+                                        Login dengan Google
+                                    </a>
+                                </div>
                                 
                                 <!-- Links -->
                                 <div class="my-2 d-flex justify-content-between align-items-center">

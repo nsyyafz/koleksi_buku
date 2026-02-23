@@ -31,5 +31,11 @@
                 <i class="mdi mdi-book-open-page-variant menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item {{ request()->is('pdf*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('pdf.index') }}">
+            <span class="menu-title">Generate PDF</span>
+            <i class="mdi mdi-file-pdf menu-icon"></i>
+        </a>
+</li>
     </ul>
 </nav>
