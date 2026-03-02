@@ -91,7 +91,7 @@
                                 
                                 <!-- Submit Button -->
                                 <div class="mt-3">
-                                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">
+                                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn d-flex align-items-center justify-content-center" style="height: 48px; width: 100%">
                                         <i class="mdi mdi-check"></i> VERIFIKASI
                                     </button>
                                 </div>

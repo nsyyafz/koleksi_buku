@@ -24,6 +24,7 @@
                             <h4 class="text-center">Halo! Selamat Datang</h4>
                             <h6 class="font-weight-light text-center">Silakan login untuk melanjutkan.</h6>
                             
+                            <!-- FORM LOGIN BIASA -->
                             <form class="pt-3" method="POST" action="{{ route('login') }}">
                                 @csrf
                                 
@@ -72,40 +73,44 @@
                                     </div>
                                 </div>
                                 
-                                <!-- Submit Button -->
+                               <!-- Submit Button LOGIN BIASA -->
                                 <div class="mt-3">
-                                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">
+                                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn d-flex align-items-center justify-content-center" style="height: 48px; width: 100%">
+                                        <i class="mdi mdi-login" style="font-size: 24px; margin-right: 10px;"></i>
                                         LOGIN
                                     </button>
                                 </div>
-
-                                <!-- Divider OR -->
-                                <div class="my-3 d-flex justify-content-between align-items-center">
-                                    <div style="flex: 1; height: 1px; background-color: #ddd;"></div>
-                                    <span style="padding: 0 15px; color: #999; font-weight: 500;">ATAU</span>
-                                    <div style="flex: 1; height: 1px; background-color: #ddd;"></div>
-                                </div>
-
-                                <!-- Google Login Button -->
-                                <div class="mt-3">
-                                    <a href="{{ route('google.redirect') }}" class="btn btn-block btn-lg font-weight-medium auth-form-btn d-flex align-items-center justify-content-center" style="background-color: #4285f4; color: white; border: none;">
-                                        <i class="mdi mdi-google" style="font-size: 24px; margin-right: 10px;"></i>
-                                        Login dengan Google
-                                    </a>
-                                </div>
                                 
-                                <!-- Links -->
+                                <!-- Forgot Password Link -->
                                 <div class="my-2 d-flex justify-content-between align-items-center">
                                     @if (Route::has('password.request'))
                                         <a href="{{ route('password.request') }}" class="auth-link text-primary">Lupa password?</a>
                                     @endif
                                 </div>
-                                
-                                <!-- Register Link -->
-                                <div class="text-center mt-4 font-weight-light">
-                                    Belum punya akun? <a href="{{ route('register') }}" class="text-primary">Daftar</a>
-                                </div>
                             </form>
+                            <!-- END FORM LOGIN BIASA -->
+                            
+                            <!-- Divider OR -->
+                            <div class="my-3 d-flex justify-content-between align-items-center">
+                                <div style="flex: 1; height: 1px; background-color: #ddd;"></div>
+                                <span style="padding: 0 15px; color: #999; font-weight: 500;">ATAU</span>
+                                <div style="flex: 1; height: 1px; background-color: #ddd;"></div>
+                            </div>
+
+                            <!-- Google Login Button (DI LUAR FORM!) -->
+                            <div class="mt-3">
+                                <a href="{{ route('google.redirect') }}" 
+                                   class="btn btn-block btn-lg font-weight-medium auth-form-btn d-flex align-items-center justify-content-center" 
+                                   style="background-color: #4285f4; color: white; border: none;">
+                                    <i class="mdi mdi-google" style="font-size: 24px; margin-right: 10px;"></i>
+                                    Login dengan Google
+                                </a>
+                            </div>
+                            
+                            <!-- Register Link -->
+                            <div class="text-center mt-4 font-weight-light">
+                                Belum punya akun? <a href="{{ route('register') }}" class="text-primary">Daftar</a>
+                            </div>
                         </div>
                     </div>
                 </div>

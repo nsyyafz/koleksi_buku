@@ -31,6 +31,12 @@
                 <i class="mdi mdi-book-open-page-variant menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item {{ request()->is('barang*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('barang.index') }}">
+                <span class="menu-title">Barang</span>
+                <i class="mdi mdi-package-variant menu-icon"></i>
+            </a>
+        </li>
         <li class="nav-item {{ request()->is('pdf*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('pdf.index') }}">
             <span class="menu-title">Generate PDF</span>

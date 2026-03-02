@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\OtpController;
-use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\KategoriController;
+use Illuminate\Support\Facades\Route;
 
 // Redirect root ke login
 Route::get('/', function () {
@@ -33,4 +34,9 @@ Route::resource('buku', BukuController::class);
 Route::get('/pdf', [App\Http\Controllers\PdfController::class, 'index'])->name('pdf.index');
 Route::get('/pdf/sertifikat', [App\Http\Controllers\PdfController::class, 'generateSertifikat'])->name('pdf.sertifikat');
 Route::get('/pdf/undangan', [App\Http\Controllers\PdfController::class, 'generateUndangan'])->name('pdf.undangan');
+
+// BARANG ROUTES (TAMBAH INI)
+Route::resource('barang', BarangController::class);
+Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data'); // Untuk DataTables
+Route::post('barang/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
 });
