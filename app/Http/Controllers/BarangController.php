@@ -8,109 +8,125 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class BarangController extends Controller
 {
-    public function index()
+    /**
+     * Halaman index - tampil semua barang
+     */
+    public function index(Request $request)
     {
-        // Data akan diambil via Ajax DataTables
-        return view('barang.index');
+        $barang = Barang::when($request->search, function ($query, $search) {
+                        $query->where('nama_barang', 'like', "%{$search}%")
+                              ->orWhere('id_barang', 'like', "%{$search}%");
+                    })
+                    ->get();
+
+        return view('barang.index', compact('barang'));
     }
-    
+
+    /**
+     * Halaman cetak - pilih barang
+     */
+    public function cetakIndex()
+    {
+        $barang = Barang::orderBy('nama_barang')->get();
+        return view('barang.cetak', compact('barang'));
+    }
+
+    /**
+     * Halaman create
+     */
     public function create()
     {
         return view('barang.create');
     }
-    
+
+    /**
+     * Store barang baru
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'nama_barang' => 'required|max:200',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
-            'deskripsi' => 'nullable',
+            'nama_barang' => 'required|string|max:200',
+            'harga'       => 'required|numeric|min:0',
+            'stok'        => 'required|integer|min:0',
+            'deskripsi'   => 'nullable|string',
         ]);
-        
-        // ID otomatis dari trigger, jadi tidak perlu diisi
+
         Barang::create($request->all());
-        
+
         return redirect()->route('barang.index')
-                       ->with('success', 'Barang berhasil ditambahkan!');
+                         ->with('success', 'Barang berhasil ditambahkan!');
     }
-    
+
+    /**
+     * Halaman edit
+     */
     public function edit(Barang $barang)
     {
         return view('barang.edit', compact('barang'));
     }
-    
+
+    /**
+     * Update barang
+     */
     public function update(Request $request, Barang $barang)
     {
         $request->validate([
-            'nama_barang' => 'required|max:200',
-            'harga' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
-            'deskripsi' => 'nullable',
+            'nama_barang' => 'required|string|max:200',
+            'harga'       => 'required|numeric|min:0',
+            'stok'        => 'required|integer|min:0',
+            'deskripsi'   => 'nullable|string',
         ]);
-        
+
         $barang->update($request->all());
-        
+
         return redirect()->route('barang.index')
-                       ->with('success', 'Barang berhasil diupdate!');
-    }
-    
-    public function destroy(Barang $barang)
-    {
-        $barang->delete();
-        
-        return redirect()->route('barang.index')
-                       ->with('success', 'Barang berhasil dihapus!');
-    }
-    
-    // Method untuk DataTables Ajax
-    public function getData()
-    {
-        $barangs = Barang::orderBy('id_barang', 'asc')->get();
-        
-        return response()->json([
-            'data' => $barangs
-        ]);
+                         ->with('success', 'Barang berhasil diupdate!');
     }
 
     /**
-     * Cetak label barang
+     * Hapus barang
+     */
+    public function destroy(Barang $barang)
+    {
+        $barang->delete();
+
+        return redirect()->route('barang.index')
+                         ->with('success', 'Barang berhasil dihapus!');
+    }
+
+    /**
+     * Generate PDF Label
      */
     public function cetak(Request $request)
     {
         $request->validate([
-            'selected_ids' => 'required|string',
-            'koordinat_x' => 'required|integer|min:1|max:5',
-            'koordinat_y' => 'required|integer|min:1|max:8',
+            'selected_ids'   => 'required|array|min:1',
+            'selected_ids.*' => 'exists:barang,id_barang',
+            'koordinat_x'    => 'required|integer|min:1|max:5',
+            'koordinat_y'    => 'required|integer|min:1|max:8',
+        ], [
+            'selected_ids.required' => 'Pilih minimal 1 barang untuk dicetak!',
+            'selected_ids.min'      => 'Pilih minimal 1 barang untuk dicetak!',
         ]);
-        
-        // Parse selected IDs
-        $ids = explode(',', $request->selected_ids);
-        
-        // Ambil data barang yang dipilih
-        $barangs = Barang::whereIn('id_barang', $ids)
-                        ->orderBy('id_barang')
-                        ->get();
-        
+
+        $barangs = Barang::whereIn('id_barang', $request->selected_ids)
+                         ->orderBy('id_barang')
+                         ->get();
+
         if ($barangs->isEmpty()) {
             return back()->with('error', 'Tidak ada barang yang dipilih!');
         }
-        
-        // Data untuk PDF
+
         $data = [
-            'barangs' => $barangs,
+            'barangs'     => $barangs,
             'koordinat_x' => $request->koordinat_x,
             'koordinat_y' => $request->koordinat_y,
-            'total_labels' => $barangs->count(),
         ];
-        
-        // Generate PDF
-        $pdf = Pdf::loadView('barang.label-pdf', $data);
-        
-        // Ukuran kertas A4
-        $pdf->setPaper('A4', 'portrait');
-        
-        // Download
-        return $pdf->download('label-harga-' . date('Y-m-d-His') . '.pdf');
+
+        $mm  = 2.8346;
+        $pdf = Pdf::loadView('barang.label-pdf', $data)
+                  ->setPaper([0, 0, 210 * $mm, 165 * $mm], 'landscape');
+
+        return $pdf->stream('label-harga-' . date('Y-m-d-His') . '.pdf');
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\JsJqueryController;
 use App\Http\Controllers\KategoriController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,8 +36,18 @@ Route::get('/pdf', [App\Http\Controllers\PdfController::class, 'index'])->name('
 Route::get('/pdf/sertifikat', [App\Http\Controllers\PdfController::class, 'generateSertifikat'])->name('pdf.sertifikat');
 Route::get('/pdf/undangan', [App\Http\Controllers\PdfController::class, 'generateUndangan'])->name('pdf.undangan');
 
-// BARANG ROUTES (TAMBAH INI)
-Route::resource('barang', BarangController::class);
-Route::get('barang-data', [BarangController::class, 'getData'])->name('barang.data'); // Untuk DataTables
-Route::post('barang/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
+// Barang (Tag Harga - Modul 3)
+    Route::resource('barang', BarangController::class);
+    Route::get('barang/cetak/index', [BarangController::class, 'cetakIndex'])->name('barang.cetak.index');
+    Route::post('barang/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
+
+    // MODUL 4: JavaScript & jQuery
+    Route::get('/js-jquery/crud-table', [JsJqueryController::class, 'crudTable'])
+        ->name('js-jquery.crud-table');
+        
+    Route::get('/js-jquery/crud-datatables', [JsJqueryController::class, 'crudDatatables'])
+        ->name('js-jquery.crud-datatables');
+        
+    Route::get('/js-jquery/select', [JsJqueryController::class, 'select'])
+        ->name('js-jquery.select');
 });

@@ -29,7 +29,7 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.sertifikat', $data);
         $pdf->setPaper('A4', 'landscape');
         
-        return $pdf->download('sertifikat-' . auth()->user()->name . '.pdf');
+        return $pdf->stream('sertifikat-' . auth()->user()->name . '.pdf');
     }
     
     /**
@@ -48,6 +48,6 @@ class PdfController extends Controller
         $pdf = Pdf::loadView('pdf.undangan', $data);
         $pdf->setPaper('A4', 'portrait');
         
-        return $pdf->download('undangan-' . auth()->user()->name . '.pdf');
+        return $pdf->stream('undangan-' . auth()->user()->name . '.pdf');
     }
 }
