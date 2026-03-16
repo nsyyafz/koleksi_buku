@@ -6,6 +6,8 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\JsJqueryController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root ke login
@@ -50,4 +52,27 @@ Route::get('/pdf/undangan', [App\Http\Controllers\PdfController::class, 'generat
         
     Route::get('/js-jquery/select', [JsJqueryController::class, 'select'])
         ->name('js-jquery.select');
+// MODUL 5
+// Halaman tampilan
+Route::get('/wilayah/ajax', [WilayahController::class, 'indexAjax'])
+    ->name('wilayah.ajax');
+    
+Route::get('/wilayah/axios', [WilayahController::class, 'indexAxios'])
+    ->name('wilayah.axios');
+ 
+// API untuk AJAX request
+Route::post('/wilayah/get-kota', [WilayahController::class, 'getKota'])
+    ->name('wilayah.get-kota');
+    
+Route::post('/wilayah/get-kecamatan', [WilayahController::class, 'getKecamatan'])
+    ->name('wilayah.get-kecamatan');
+    
+Route::post('/wilayah/get-kelurahan', [WilayahController::class, 'getKelurahan'])
+    ->name('wilayah.get-kelurahan');
+
+// POS Routes
+Route::get('/pos/ajax',  [PosController::class, 'indexAjax'])->name('pos.ajax');
+Route::get('/pos/axios', [PosController::class, 'indexAxios'])->name('pos.axios');
+Route::post('/pos/get-barang', [PosController::class, 'getBarang'])->name('pos.get-barang');
+Route::post('/pos/bayar',      [PosController::class, 'bayar'])->name('pos.bayar');
 });

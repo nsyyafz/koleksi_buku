@@ -77,6 +77,49 @@
                 </ul>
             </div>
         </li>
-        
+        <!-- MENU MODUL 5: WILAYAH INDONESIA -->
+        <li class="nav-item {{ request()->is('wilayah*') ? 'active' : '' }}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-wilayah" aria-expanded="false" aria-controls="ui-wilayah">
+                <span class="menu-title">Wilayah Indonesia</span>
+                <i class="mdi mdi-map-marker menu-icon"></i>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-wilayah">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('wilayah.ajax') }}">
+                            jQuery AJAX
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('wilayah.axios') }}">
+                            Axios
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+                <!-- MENU MODUL 5:POS -->
+        <li class="nav-item {{ request()->is('pos*') ? 'active' : '' }}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-pos" aria-expanded="false" aria-controls="ui-pos">
+                <span class="menu-title">Point of Sales</span>
+                <i class="mdi mdi-cash-register menu-icon"></i>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-pos">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pos.ajax') }}">
+                            jQuery AJAX
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pos.axios') }}">
+                            Axios
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
     </ul>
 </nav>

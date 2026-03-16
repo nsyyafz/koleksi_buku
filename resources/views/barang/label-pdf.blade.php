@@ -5,7 +5,7 @@
     <title>Label Harga</title>
     <style>
         @page { size: 210mm 163mm; margin: 0; }
-        body { margin:0; font-family: Arial, sans-serif; background-color: #fff; }
+        body { margin:0; font-family: Arial, sans-serif; background-color: #fff951; }
 
         table.label-sheet {
             border-spacing: 3mm 2mm;

@@ -98,6 +98,14 @@ return [
             'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
+        'pgsql_wilayah' => [  // Database kedua untuk wilayah
+        'driver' => 'pgsql',
+        'host' => env('DB_WILAYAH_HOST', '127.0.0.1'),
+        'database' => env('DB_WILAYAH_DATABASE', 'wilayah_indonesia'),
+        'username' => env('DB_WILAYAH_USERNAME', 'postgres'),
+        'password' => env('DB_WILAYAH_PASSWORD', 'nasywa123')
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),
