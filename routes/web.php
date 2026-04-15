@@ -4,9 +4,13 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\JsJqueryController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\VendorDashboardController;
+use App\Http\Controllers\VendorMenuController;
 use App\Http\Controllers\WilayahController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,3 +80,52 @@ Route::get('/pos/axios', [PosController::class, 'indexAxios'])->name('pos.axios'
 Route::post('/pos/get-barang', [PosController::class, 'getBarang'])->name('pos.get-barang');
 Route::post('/pos/bayar',      [PosController::class, 'bayar'])->name('pos.bayar');
 });
+
+
+// ============================================================================
+// PAYMENT GATEWAY - CUSTOMER (TANPA AUTH)
+// ============================================================================
+
+Route::get('/order', [CustomerOrderController::class, 'index'])
+    ->name('customer.order');
+
+Route::post('/order/get-menus', [CustomerOrderController::class, 'getMenus'])
+    ->name('customer.get-menus');
+
+Route::post('/order/create', [CustomerOrderController::class, 'createOrder'])
+    ->name('customer.order.create');
+
+Route::get('/order/receipt/{order_number}', [CustomerOrderController::class, 'receipt'])
+    ->name('customer.receipt');
+
+
+// ============================================================================
+// PAYMENT GATEWAY - VENDOR (DENGAN AUTH)
+// ============================================================================
+
+Route::middleware(['auth'])->prefix('vendor')->name('vendor.')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [VendorDashboardController::class, 'index'])
+        ->name('dashboard');
+    
+    // Orders List
+    Route::get('/orders', [VendorDashboardController::class, 'orders'])
+        ->name('orders');
+    
+    Route::get('/orders/{order_number}', [VendorDashboardController::class, 'orderDetail'])
+        ->name('orders.detail');
+    
+    // Menu CRUD
+    Route::resource('menu', VendorMenuController::class);
+    
+    // Toggle menu availability
+    Route::post('/menu/{id}/toggle', [VendorMenuController::class, 'toggleAvailability'])
+        ->name('menu.toggle');
+});
+
+Route::post('/payment/notification', [PaymentController::class, 'notification'])
+    ->name('payment.notification');
+
+Route::post('/payment/check-status', [PaymentController::class, 'checkStatus'])
+    ->name('payment.check-status');
