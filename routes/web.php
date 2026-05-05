@@ -46,6 +46,8 @@ Route::get('/pdf/undangan', [App\Http\Controllers\PdfController::class, 'generat
     Route::resource('barang', BarangController::class);
     Route::get('barang/cetak/index', [BarangController::class, 'cetakIndex'])->name('barang.cetak.index');
     Route::post('barang/cetak', [BarangController::class, 'cetak'])->name('barang.cetak');
+    Route::get('/barang/tag-harga/{id}', [BarangController::class, 'generateTagHarga'])
+    ->name('barang.tag-harga');
 
     // MODUL 4: JavaScript & jQuery
     Route::get('/js-jquery/crud-table', [JsJqueryController::class, 'crudTable'])
@@ -129,3 +131,7 @@ Route::post('/payment/notification', [PaymentController::class, 'notification'])
 
 Route::post('/payment/check-status', [PaymentController::class, 'checkStatus'])
     ->name('payment.check-status');
+    
+// Barcode Reader
+Route::get('/barcode-reader', [BarangController::class, 'barcodeReader'])->name('barcode.reader');
+Route::get('/barcode-reader/cari', [BarangController::class, 'cariBarcodeBarang'])->name('barcode.cari');

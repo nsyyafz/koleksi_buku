@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Picqer\Barcode\BarcodeGeneratorPNG; // tambahkan di bagian use atas file
 
 class BarangController extends Controller
 {
@@ -110,15 +111,29 @@ class BarangController extends Controller
         ]);
 
         $barangs = Barang::whereIn('id_barang', $request->selected_ids)
-                         ->orderBy('id_barang')
-                         ->get();
+                 ->orderBy('id_barang')
+                 ->get();
 
         if ($barangs->isEmpty()) {
             return back()->with('error', 'Tidak ada barang yang dipilih!');
         }
 
+        // Generate barcode untuk setiap barang
+        $generator = new BarcodeGeneratorPNG();
+        $barcodes = [];
+        foreach ($barangs as $b) {
+            $barcodeString = $generator->getBarcode(
+                $b->id_barang,
+                $generator::TYPE_CODE_128,
+                2,   // width per bar
+                40   // height
+            );
+            $barcodes[$b->id_barang] = 'data:image/png;base64,' . base64_encode($barcodeString);
+        }
+
         $data = [
             'barangs'     => $barangs,
+            'barcodes'    => $barcodes,       // ← tambahan
             'koordinat_x' => $request->koordinat_x,
             'koordinat_y' => $request->koordinat_y,
         ];
@@ -129,4 +144,42 @@ class BarangController extends Controller
 
         return $pdf->stream('label-harga-' . date('Y-m-d-His') . '.pdf');
     }
+
+    public function generateTagHarga($id)
+    {
+        $barang = Barang::findOrFail($id);
+        
+        // Generate barcode
+        $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+        $barcode = $generator->getBarcode($barang->id_barang, $generator::TYPE_CODE_128);
+        $barcodeBase64 = base64_encode($barcode);
+        
+        // Generate PDF dengan DomPDF
+        $pdf = PDF::loadView('barang.tag-harga-pdf', [
+            'barang' => $barang,
+            'barcode' => $barcodeBase64
+        ]);
+        
+        return $pdf->download('tag-harga-' . $barang->id_barang . '.pdf');
+    }
+
+public function barcodeReader()
+{
+    return view('barang.barcode-reader');
+}
+
+public function cariBarcodeBarang(Request $request)
+{
+    $barang = Barang::where('id_barang', $request->id)->first();
+
+    if ($barang) {
+        return response()->json([
+            'success' => true,
+            'barang'  => $barang
+        ]);
+    }
+
+    return response()->json(['success' => false]);
+}
+
 }

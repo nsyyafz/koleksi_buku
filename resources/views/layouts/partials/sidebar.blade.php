@@ -41,7 +41,15 @@
                 <i class="mdi mdi-package-variant menu-icon"></i>
             </a>
         </li>
-        
+
+        <!-- MENU BARCODE READER -->
+        <li class="nav-item {{ request()->is('barcode-reader*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('barcode.reader') }}">
+                <span class="menu-title">Barcode Reader</span>
+                <i class="mdi mdi-barcode-scan menu-icon"></i>
+            </a>
+        </li>
+
         <li class="nav-item {{ request()->is('pdf*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('pdf.index') }}">
                 <span class="menu-title">Generate PDF</span>

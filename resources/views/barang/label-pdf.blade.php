@@ -11,29 +11,32 @@
             border-spacing: 3mm 2mm;
             table-layout: fixed;
             width: 210mm;
-            height: 163qmm;
+            height: 163mm;
         }
         table.label-sheet td {
             width: 38mm;
             height: 18mm;
-            padding: 0;
+            padding: 1px 0 0 0;
             text-align: center;
             vertical-align: middle;
             background-color: #fff;
         }
-        .label-nama  { font-size: 6pt;   font-weight: bold; }
-        .label-harga { font-size: 7.5pt; font-weight: bold; }
-        .label-id    { font-size: 4.5pt; color: #888; }
+        .label-barcode img {
+            width: 34mm;
+            height: 8mm;
+            display: block;
+            margin: 0 auto;
+        }
+        .label-nama  { font-size: 5pt;   font-weight: bold; line-height: 1.1; }
+        .label-harga { font-size: 6.5pt; font-weight: bold; }
+        .label-id    { font-size: 4pt;   color: #888; }
     </style>
 </head>
 <body>
 @php
     $cols          = 5;
     $rows          = 8;
-    $totalCells    = $cols * $rows;
-    $startX        = $koordinat_x;
-    $startY        = $koordinat_y;
-    $startPosition = ($startY - 1) * $cols + ($startX - 1);
+    $startPosition = ($koordinat_y - 1) * $cols + ($koordinat_x - 1);
     $barangIndex   = 0;
     $totalBarangs  = count($barangs);
 @endphp
@@ -50,15 +53,21 @@
     <tr style="height:18mm">
         @for ($col = 0; $col < $cols; $col++)
         @php
-            $i = $row * $cols + $col;
+            $i          = $row * $cols + $col;
             $shouldFill = $i >= $startPosition && $barangIndex < $totalBarangs;
         @endphp
         <td>
             @if ($shouldFill)
-                @php $barang = $barangs[$barangIndex]; $barangIndex++; @endphp
-                <div class="label-nama">{{ Str::limit($barang->nama_barang, 30) }}</div>
-                <div class="label-harga">Rp {{ number_format($barang->harga, 0, ',', '.') }}</div>
-                <div class="label-id">{{ $barang->id_barang }}</div>
+                @php $b = $barangs[$barangIndex]; $barangIndex++; @endphp
+
+                {{-- Barcode di atas id_barang --}}
+                <div class="label-barcode">
+                    <img src="{{ $barcodes[$b->id_barang] }}" alt="{{ $b->id_barang }}">
+                </div>
+
+                <div class="label-id">{{ $b->id_barang }}</div>
+                <div class="label-nama">{{ Str::limit($b->nama_barang, 25) }}</div>
+                <div class="label-harga">Rp {{ number_format($b->harga, 0, ',', '.') }}</div>
             @endif
         </td>
         @endfor
