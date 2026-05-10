@@ -10,6 +10,8 @@ use App\Models\OrderDetail;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class CustomerOrderController extends Controller
 {
@@ -203,11 +205,11 @@ class CustomerOrderController extends Controller
     /**
      * Tampilkan receipt/nota setelah pembayaran
      */
-    public function receipt($orderNumber)
+   public function receipt($orderNumber)
     {
         $order = Order::where('order_number', $orderNumber)
-                      ->with(['vendor', 'details.menu', 'user'])
-                      ->firstOrFail();
+                    ->with(['vendor', 'details.menu', 'user'])
+                    ->firstOrFail();
 
         return view('customer.receipt', compact('order'));
     }

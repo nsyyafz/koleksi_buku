@@ -75,7 +75,7 @@
                                 <td>
                                     <span class="badge badge-success">Lunas</span>
                                     <br>
-                                    <small class="text-muted">{{ $order->paid_at->format('d M, H:i') }}</small>
+                                    <small class="text-muted">{{ $order->paid_at ? $order->paid_at->format('d M Y') : '-' }}</small>
                                 </td>
                                 <td>
                                     <a href="{{ route('vendor.orders.detail', $order->order_number) }}" 

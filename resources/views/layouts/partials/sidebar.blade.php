@@ -146,6 +146,7 @@
                                 <li><a href="{{ route('vendor.dashboard') }}">Dashboard</a></li>
                                 <li><a href="{{ route('vendor.menu.index') }}">Menu</a></li>
                                 <li><a href="{{ route('vendor.orders') }}">Pesanan</a></li>
+                                <li><a href="{{ route('vendor.qr-reader') }}">QR Code Reader</a></li>
                             </ul>
                         </div>
                     </li>

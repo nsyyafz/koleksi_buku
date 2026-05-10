@@ -114,6 +114,12 @@ Route::middleware(['auth'])->prefix('vendor')->name('vendor.')->group(function (
     // Orders List
     Route::get('/orders', [VendorDashboardController::class, 'orders'])
         ->name('orders');
+
+    Route::get('/qr-reader', [VendorDashboardController::class, 'qrReader'])
+    ->name('qr-reader');
+
+Route::get('/order-detail/{order_number}', [VendorDashboardController::class, 'getOrderByQr'])
+    ->name('order-by-qr');
     
     Route::get('/orders/{order_number}', [VendorDashboardController::class, 'orderDetail'])
         ->name('orders.detail');

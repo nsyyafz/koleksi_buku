@@ -18,6 +18,31 @@
 
                 <hr>
 
+                {{-- QR Code via JavaScript --}}
+@if($order->isPaid())
+<div class="text-center mb-4">
+    <p class="text-muted small mb-2">Tunjukkan QR Code ini ke vendor</p>
+    <div id="qrcode" style="display:inline-block; padding:8px; border:1px solid #ddd; border-radius:8px; background:#fff;"></div>
+    <p class="mt-2 mb-0" style="font-size:11px; color:#888; letter-spacing:1px;">
+        {{ $order->order_number }}
+    </p>
+</div>
+<hr>
+@endif
+
+@push('scripts-page')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+@if($order->isPaid())
+<script>
+    new QRCode(document.getElementById("qrcode"), {
+        text: "{{ $order->order_number }}",
+        width: 180,
+        height: 180,
+    });
+</script>
+@endif
+@endpush
+
                 <!-- Vendor Info -->
                 <div class="mb-4">
                     <h5>{{ $order->vendor->name }}</h5>
